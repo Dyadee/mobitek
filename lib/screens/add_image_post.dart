@@ -283,7 +283,11 @@ class _AddImagePostState extends State<AddImagePost> {
 
                   var _imagePost = ImagePost(
                     imageID: _nanoID,
-                    imageTags: _imageTagsController.text.trim().split(','),
+                    imageTags: _imageTagsController.text
+                        .trim()
+                        .split(',')
+                        .map((e) => e.trim())
+                        .toList(),
                   );
 
                   firestoreService.setImagePost(_imagePost).whenComplete(() {
@@ -295,8 +299,8 @@ class _AddImagePostState extends State<AddImagePost> {
                       });
                     }
                     const snackBar = SnackBar(
-                      content: Text('Item Profile Saved Successfully!'),
-                      backgroundColor: Colors.grey,
+                      content: Text('Image Saved Successfully!'),
+                      backgroundColor: Colors.yellow,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     Navigator.pop(context);

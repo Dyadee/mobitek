@@ -27,13 +27,13 @@ class FirestoreService {
   }
 
   //Get List of ImagePosts
-  Stream<List<ImagePost>> get getImagePost {
+  Stream<List<ImagePost>> get getImagePostList {
     return _firestore.collection('images').snapshots().map((snapshot) =>
         snapshot.docs.map((doc) => ImagePost.fromJson(doc.data())).toList());
   }
 
   //Get List of Product Items by User ID
-  Stream<List<ImagePost>> getProductItemListByUserId(String userID) {
+  Stream<List<ImagePost>> getImagePostListByUserId(String userID) {
     return _firestore
         .collection('images')
         .where('userID', isEqualTo: userID)
@@ -44,7 +44,7 @@ class FirestoreService {
   }
 
   //Get Single Product Items by Item ID
-  Stream<ImagePost> getProductItemByItemID(String itemID) {
+  Stream<ImagePost> getImagePostByItemID(String itemID) {
     return _firestore
         .collection('product_items')
         .where('itemID', isEqualTo: itemID)
