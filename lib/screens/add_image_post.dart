@@ -299,7 +299,8 @@ class _AddImagePostState extends State<AddImagePost> {
                       });
                     }
                     const snackBar = SnackBar(
-                      content: Text('Image Saved Successfully!'),
+                      content: Text('Image Saved Successfully!',
+                          style: TextStyle(color: Colors.black)),
                       backgroundColor: Colors.yellow,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);

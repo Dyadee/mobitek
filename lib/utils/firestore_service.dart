@@ -32,26 +32,12 @@ class FirestoreService {
         snapshot.docs.map((doc) => ImagePost.fromJson(doc.data())).toList());
   }
 
-  //Get List of Product Items by User ID
-  Stream<List<ImagePost>> getImagePostListByUserId(String userID) {
+  //Update Views
+  Future<void> incrementViews(String _imageID, int currentViews) {
+    var options = SetOptions(merge: true);
     return _firestore
         .collection('images')
-        .where('userID', isEqualTo: userID)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => ImagePost.fromJson(doc.data()))
-            .toList());
-  }
-
-  //Get Single Product Items by Item ID
-  Stream<ImagePost> getImagePostByItemID(String itemID) {
-    return _firestore
-        .collection('product_items')
-        .where('itemID', isEqualTo: itemID)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => ImagePost.fromJson(doc.data()))
-            .toList()
-            .first);
+        .doc(_imageID)
+        .set({'imageViews': currentViews + 1}, options);
   }
 }

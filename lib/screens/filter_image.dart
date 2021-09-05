@@ -126,14 +126,15 @@ class _FilterImageState extends State<FilterImage> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: ListView.builder(
-              shrinkWrap: true,
+              // shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              // ignore: prefer_const_constructors
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(8.0, 30.0, 8.0, 8.0),
               itemCount: _imagesList.length,
               itemBuilder: (context, index) {
                 return Container(
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   height: 200,
                   // color: Colors.blue,
                   alignment: Alignment.center,
@@ -144,43 +145,70 @@ class _FilterImageState extends State<FilterImage> {
                       print(_imagesList[index].imageTags);
                       // ignore: avoid_print
                       print(_imagesList[index].imageTags!.contains("water"));
+
+                      firestoreService.incrementViews(
+                          _imagesList[index].imageID!,
+                          _imagesList[index].imageViews);
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.yellowAccent,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
+                    child: Stack(
+                      fit: StackFit.expand,
                       clipBehavior: Clip.none,
-                      // alignment: Alignment.center,
-                      // height: 400,
-                      // width: double.infinity,
-                      child: _imagesList[index].imageUrl != null
-                          ? Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image(
-                                    image: CachedNetworkImageProvider(
-                                        _imagesList[index].imageUrl!),
-                                    fit: BoxFit.cover,
-                                  ),
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Colors.grey[200],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          clipBehavior: Clip.none,
+                          // alignment: Alignment.center,
+                          // height: 400,
+                          width: MediaQuery.of(context).size.width,
+                          child: _imagesList[index].imageUrl != null
+                              ? Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: CachedNetworkImageProvider(
+                                            _imagesList[index].imageUrl!),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  ],
                                 )
-                              ],
-                            )
-                          : const Icon(
-                              Icons.add_a_photo,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
+                              : const Icon(
+                                  Icons.add_a_photo,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 8.0),
+                            decoration: const BoxDecoration(
+                                color: Colors.white54,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(8))),
+                            width: MediaQuery.of(context).size.width - 16,
+                            height: 40,
+                            child:
+                                Text('Views: ${_imagesList[index].imageViews}'),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
