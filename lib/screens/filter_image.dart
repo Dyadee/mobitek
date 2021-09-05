@@ -8,12 +8,12 @@ import 'package:mobitek/utils/storage_service.dart';
 import 'package:nanoid/nanoid.dart';
 
 // ignore: must_be_immutable, use_key_in_widget_constructors
-class AddImagePost extends StatefulWidget {
+class FilterImage extends StatefulWidget {
   @override
-  _AddImagePostState createState() => _AddImagePostState();
+  _FilterImageState createState() => _FilterImageState();
 }
 
-class _AddImagePostState extends State<AddImagePost> {
+class _FilterImageState extends State<FilterImage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var firestoreService = FirestoreService();
   final _nanoID = nanoid(7);
@@ -80,10 +80,10 @@ class _AddImagePostState extends State<AddImagePost> {
               return null;
             }
           },
-          style: const TextStyle(
-            color: Colors.black87,
+          style: TextStyle(
+            color: Colors.grey[300],
             fontFamily: 'OpenSans',
-            fontSize: 14.0,
+            fontSize: 12.0,
           ),
           decoration: InputDecoration(
             labelText: label,
@@ -94,7 +94,7 @@ class _AddImagePostState extends State<AddImagePost> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             contentPadding: const EdgeInsets.all(20.0),
-            hintText: "Enter tags separated by comma",
+            hintText: "Enter your item's $name",
             hintStyle: kHintTextStyle,
           ),
         ),
@@ -108,7 +108,7 @@ class _AddImagePostState extends State<AddImagePost> {
       padding: const EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 14.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: Colors.grey[100],
+        color: Colors.grey,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -128,9 +128,9 @@ class _AddImagePostState extends State<AddImagePost> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Choose Image',
+                  'Item Image',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.grey,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold),
                 ),
@@ -140,7 +140,7 @@ class _AddImagePostState extends State<AddImagePost> {
                   icon: const Icon(
                     Icons.add_a_photo,
                     size: 24,
-                    color: Colors.black87,
+                    color: Colors.grey,
                   ),
                   onPressed: pickImage,
                 ),
@@ -155,7 +155,7 @@ class _AddImagePostState extends State<AddImagePost> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
-              color: Colors.grey[300],
+              color: Colors.amber[100],
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -219,7 +219,7 @@ class _AddImagePostState extends State<AddImagePost> {
           const Text(
             'Image Tags',
             style: TextStyle(
-                color: Colors.black87,
+                color: Colors.grey,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           ),
@@ -239,78 +239,55 @@ class _AddImagePostState extends State<AddImagePost> {
   }
 
   Widget buildSaveImagePostBtn(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(80, 40),
-            primary: Theme.of(context).primaryColor,
-            onPrimary: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text(
-            'CANCEL',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
-            ),
-          ),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(80, 40),
-            primary: Theme.of(context).primaryColor,
-            onPrimary: Colors.white,
-          ),
-          onPressed: () {
-            if (_formKey.currentState!.validate() && _imageFile != null) {
-              _formKey.currentState!.save();
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(60.0),
+        primary: Colors.grey,
+        onPrimary: Colors.grey[100],
+      ),
+      onPressed: () {
+        if (_formKey.currentState!.validate() && _imageFile != null) {
+          _formKey.currentState!.save();
 
-              var _imagePost = ImagePost(
-                imageID: _nanoID,
-                imageTags: _imageTagsController.text.trim().split(','),
-              );
+          var _imagePost = ImagePost(
+            imageID: _nanoID,
+            imageTags: _imageTagsController.text.trim().split(','),
+          );
 
-              firestoreService.setImagePost(_imagePost).whenComplete(() {
-                if (_imageFile != null) {
-                  uploadImage(_imageFile!, _imagePost.imageID!)
-                      .then((_itemImageUrl) {
-                    firestoreService.setItemImageUrl(
-                        _itemImageUrl!, _imagePost.imageID!);
-                  });
-                }
-                const snackBar = SnackBar(
-                  content: Text('Item Profile Saved Successfully!'),
-                  backgroundColor: Colors.grey,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                Navigator.pop(context);
+          firestoreService.setImagePost(_imagePost).whenComplete(() {
+            if (_imageFile != null) {
+              uploadImage(_imageFile!, _imagePost.imageID!)
+                  .then((_itemImageUrl) {
+                firestoreService.setItemImageUrl(
+                    _itemImageUrl!, _imagePost.imageID!);
               });
-            } else {
-              const snackBar = SnackBar(
-                content: Text(
-                  'Something went wrong. Please check all fields and your network connection.',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                backgroundColor: Colors.amberAccent,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
-          },
-          child: const Text(
-            'SUBMIT',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
+            const snackBar = SnackBar(
+              content: Text('Item Profile Saved Successfully!'),
+              backgroundColor: Colors.grey,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.pop(context);
+          });
+        } else {
+          const snackBar = SnackBar(
+            content: Text(
+              'Something went wrong. Please check all fields and your network connection.',
+              style: TextStyle(color: Colors.grey),
             ),
-          ),
+            backgroundColor: Colors.amberAccent,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
+      child: const Text(
+        'SAVE',
+        style: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
         ),
-      ],
+      ),
     );
   }
 
@@ -331,7 +308,7 @@ class _AddImagePostState extends State<AddImagePost> {
             },
           ),
           title: const Text(
-            "Upload Image",
+            "Filter Image",
             style: TextStyle(color: Colors.white),
           ),
         ),

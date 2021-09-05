@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobitek/screens/add_image_post.dart';
+import 'package:mobitek/screens/filter_image.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddImagePost()));
+                      MaterialPageRoute(builder: (context) => FilterImage()));
                 },
                 child: const Text('Image List')),
           ],
