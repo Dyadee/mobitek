@@ -9,10 +9,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         elevation: 1,
         title: const Text(
-          "Home",
-          style: TextStyle(color: Colors.white),
+          "MobiTek Photo Uploader",
+          style: TextStyle(color: Colors.black),
         ),
       ),
       // ignore: sized_box_for_whitespace
@@ -26,8 +27,8 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(60.0),
-                  primary: Colors.grey,
-                  onPrimary: Colors.grey[100],
+                  primary: Theme.of(context).primaryColor,
+                  onPrimary: Colors.black87,
                 ),
                 onPressed: () {
                   Navigator.push(context,
@@ -40,8 +41,8 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(60.0),
-                  primary: Colors.grey,
-                  onPrimary: Colors.grey[100],
+                  primary: Theme.of(context).primaryColor,
+                  onPrimary: Colors.black87,
                 ),
                 onPressed: () {
                   Navigator.push(context,
