@@ -4,9 +4,7 @@ import 'package:mobitek/models/image_post.dart';
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
 
-  //**----CityDash Product Items----**//
-
-  //Add or Update a Single Product Item
+  //Add or Update a Single Image Item
   Future<void> setImagePost(ImagePost imagePost) {
     var options = SetOptions(merge: true);
 
